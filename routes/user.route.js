@@ -18,7 +18,7 @@ router.get("/", async (req,res)=>{
 
         const users = await User.find().skip(skip).limit(per_page);
 
-        if(!users) return res.status(400).json({msg: "No users found"}) 
+        if(!users) return res.status(400).json({msg: "No users found!"}) 
         res.status(200).json(users);
     }
     catch(err){
@@ -26,10 +26,10 @@ router.get("/", async (req,res)=>{
     }
 })
 
-router.get("/code/:code", async (req,res)=>{
+router.get("/username/:username", async (req,res)=>{
     try{
-        const user = await User.findOne({code: req.params.code});
-        if(!user) return res.status(400).json({msg: "User not found"})        
+        const user = await User.findOne({username: req.params.username});
+        if(!user) return res.status(400).json({msg: "UserName not found!"})        
         res.status(200).json(user);
     }
     catch(err){
@@ -48,16 +48,14 @@ router.post("/", ...validateUser() ,async (req,res)=>{
         }
 
         // * Create User
-        const doesUserExist= await User.findOne({code: req.body.code})
-        if(doesUserExist) return res.status(400).json({msg: "Duplicate code found"})
+        const doesUserExist= await User.findOne({username: req.body.username})
+        if(doesUserExist) return res.status(400).json({msg: "Duplicate User found!"})
         const user = await User.create({
-            name: req.body.name,
-            code: req.body.code,
-            active: req.body.active,
-            followers: 0
+            username: req.body.username,
+            email: req.body.email
         })
 
-        if(!user) return res.status(400).json({msg: "User not created"})
+        if(!user) return res.status(400).json({msg: "User not created!"})
 
         //200 ok
         return res.status(200).json(user)
@@ -70,7 +68,7 @@ router.post("/", ...validateUser() ,async (req,res)=>{
 router.delete("/:user_id", async (req,res)=>{
     try{
         const user = await User.findOneAndDelete({ _id: req.params.user_id })
-        if(!user) return res.status(404).json({msg: "User not found"})
+        if(!user) return res.status(404).json({msg: "UserName not found!"})
         res.status(200).json(user)
     }
     catch(err){
@@ -80,19 +78,19 @@ router.delete("/:user_id", async (req,res)=>{
 
 router.patch("/:user_id", async (req,res)=>{
     try{
-        if(!req.body.name) return res.status(400).json({msg: "Name is required"});
+        if(!req.body.username) return res.status(400).json({msg: "UserName is required"});
         const user = await User.findOneAndUpdate({ 
             _id: req.params.user_id 
         },{
             $set: {
-                name: req.body.name,
-                active: req.body.active
+                username: req.body.username,
+                email: req.body.email
             }
         },{
             returnOriginal: false
         }
             )
-        if(!user) return res.status(404).json({msg: "User not found"})
+        if(!user) return res.status(404).json({msg: "User not found!"})
         res.status(200).json(user)
     }
     catch(err){

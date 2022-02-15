@@ -3,6 +3,7 @@ const app =express();
 const cors= require('cors');
 const connect = require('./config/db');
 const userRouter = require('./routes/user.route');
+const tweetRouter = require('./routes/tweet.route');
 
 const PORT=5001;
 
@@ -10,7 +11,9 @@ const PORT=5001;
 app.use(cors());
 app.use(express.json())
 
+
 app.use("/users", userRouter);
+app.use("/tweets",tweetRouter);
 
 const start= async ()=>{
     await connect();
