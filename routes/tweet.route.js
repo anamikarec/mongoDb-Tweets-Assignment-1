@@ -6,15 +6,13 @@ const router= express.Router();
 const Tweet= require('../models/tweet.model');
 const validateTweet = require("../utils/validateTweet");
 
-// ? pagination
-// ? limit, skip
-
+//pagination
+// limit skip
 router.get("/", async (req,res)=>{
     try{
         const per_page = req.query.per_page || 2;
         const page = req.query.page || 1;
         const skip = page < 0 ? 0 : (page - 1)*per_page;
-        // (page - 1)*per_page
 
         const tweet = await Tweet.find().skip(skip).limit(per_page);
 
@@ -40,14 +38,11 @@ router.get("/title/:title", async (req,res)=>{
 
 router.post("/", ...validateTweet() ,async (req,res)=>{
     try{
-        // * Validate
         const errors = validationResult(req);
         if(!errors.isEmpty())
         {
             return res.status(400).json({errors: errors.array()});
         }
-
-        // * Create User
         const doesTweetExist= await Tweet.findOne({title: req.body.title})
         if(doesTweetExist) return res.status(400).json({msg: "Duplicate Title found!"})
         const tweet = await Tweet.create({
@@ -57,8 +52,6 @@ router.post("/", ...validateTweet() ,async (req,res)=>{
         })
 
         if(!tweet) return res.status(400).json({msg: "Tweet not created!"})
-
-        //200 ok
         return res.status(200).json(tweet)
     }
     catch(err){
