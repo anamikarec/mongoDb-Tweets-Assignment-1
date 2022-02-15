@@ -15,3 +15,24 @@ Assignment-5467
 - show total count as well, you can use .count() against the query
 #### Validations
 - create validations on each API endpoint
+
+## How to run this program
+- Step:1 First clone the repo
+```js
+  git clone https://github.com/anamikarec/mongoDb-Tweets-Assignment-1.git
+```
+- Step:2 Navigate inside the particular folder
+```js
+cd <folder_name>
+```
+- Step:3 Run the following command to install npm
+```js
+npm install
+```
+- Step:3 Run the following command to run the code
+```js
+  npm run start
+```
+- NOTE:~ Inplace of ```localhost``` use ```127.0.0.1```
+
+- Then open the postman and do ```GET``` ```POST``` ```PATCH``` ```DELETE```request
